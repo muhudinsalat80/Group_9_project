@@ -1,87 +1,126 @@
-# ==================================
-#            CLASSES
-# ==================================
+from datetime import datetime
 
+
+# ===============================
+# USER CLASS  (users table)
+# ===============================
 class User:
-    def __init__(self, user_id, username, password, role):
+    def __init__(self, user_id, username, password_hash, role, email, created_at):
         self.__user_id = user_id
         self.username = username
-        self.__password = password
+        self.__password_hash = password_hash
         self.role = role
+        self.email = email
+        self.created_at = created_at
 
+    # Getter for private id
+    def get_user_id(self):
+        return self.__user_id
+
+    # Behavior method
     def check_password(self, password):
-        #boolean comparison
-        return self.__password == password
+        return self.__password_hash == password
 
 
+# ===============================
+# ADMIN (inherits from User)
+# ===============================
 class Admin(User):
-    def __init__(self, user_id, username, password):
-        super().__init__(user_id, username, password, "admin")
+    def __init__(self, user_id, username, password_hash, email):
+        super().__init__(
+            user_id,
+            username,
+            password_hash,
+            "admin",
+            email,
+            datetime.now()
+        )
 
 
+# ===============================
+# STUDENT (inherits from User)
+# ===============================
 class Student(User):
-    def __init__(self, user_id, username, password):
-        super().__init__(user_id, username, password, "student")
-        self.enrolled_courses = []
+    def __init__(self, user_id, username, password_hash, email):
+        super().__init__(
+            user_id,
+            username,
+            password_hash,
+            "student",
+            email,
+            datetime.now()
+        )
 
 
+# ===============================
+# COURSE CLASS (courses table)
+# ===============================
 class Course:
-    def __init__(self, course_id, course_name):
+    def __init__(self, course_id, title, description, instructor_name, created_at):
         self.course_id = course_id
-        self.course_name = course_name
+        self.title = title
+        self.description = description
+        self.instructor_name = instructor_name
+        self.created_at = created_at
 
 
-# ==================================
-#         SYSTEM CLASS
-# ==================================
+# ===============================
+# REGISTRATION CLASS (registrations table)
+# ===============================
+class Registration:
+    def __init__(self, reg_id, user_id, course_id, status, registered_at):
+        self.reg_id = reg_id
+        self.user_id = user_id
+        self.course_id = course_id
+        self.status = status
+        self.registered_at = registered_at
 
-class System:
+users = []
+courses = []
+registrations = []
 
-    def __init__(self):
-        self.users = []
-        self.courses = []
+# ===============================
+# SIMULATION DATA
+# ===============================
 
-        # Pre-created users
-        admin1 = Admin(1, "admin", "1234")
-        student1 = Student(2, "ali", "1111")
+id_counter = 1
 
-        self.users.append(admin1)
-        self.users.append(student1)
+# Create Users
+u1 = Admin(id_counter, "mohamed", "12345", "mohamed@email.com")
+users.append(u1)
+id_counter += 1
 
-    # ---------------------------
-    # LOGIN
-    # ---------------------------
-    #its job is To check if the entered username and password match a user in the system.
-    def login(self, username, password):
-        for user in self.users:
-            if user.username == username and user.check_password(password):
-                return user
-        return None
+u2 = Student(id_counter, "feisal", "1111", "feisal@email.com")
+users.append(u2)
+id_counter += 1
 
-    # ---------------------------
-    # CREATE COURSE
-    # ---------------------------
-    def create_course(self, course_id, course_name):
-        new_course = Course(course_id, course_name)
-        self.courses.append(new_course)
+u3 = Student(id_counter, "khalid", "3333", "khalid@email.com")
+users.append(u3)
+id_counter += 1
 
-    # ---------------------------
-    # GET COURSES
-    # ---------------------------
-    def get_courses(self):
-        return self.courses
 
-    # ---------------------------
-    # ENROLL STUDENT
-    # ---------------------------
-    def enroll_student(self, student, course_id):
+# Create Courses
+c1 = Course(1, "Python Programming", "Learn Python basics", "Dr. Ahmed", datetime.now())
+courses.append(c1)
+c2 = Course(2, "Database Systems", "Learn SQL and DB design", "Dr. Ali", datetime.now())
+courses.append(c2)
 
-        for course in self.courses:
-            if course.course_id == course_id:
-                student.enrolled_courses.append(course)
-                return True
+# Create Registrations (Many-to-Many relationship)
+r1 = Registration(1, u2.get_user_id(), c1.course_id, "active", datetime.now())
+registrations.append(r1)
+r2 = Registration(2, u3.get_user_id(), c2.course_id, "active", datetime.now())
+registrations.append(r2)
 
-        return False
+print(u1.username, "-", u1.get_user_id(), "-", u1.role ,"-" , u1.created_at.date())
+print(u2.username, "-", u2.get_user_id(), "-", u2.role ,"-" , u2.created_at.date())
+print(u3.username, "-", u3.get_user_id(), "-", u3.role , "-" ,u3.created_at.date())
+   
+    
+
+    
+
+
+    
 
 
 
