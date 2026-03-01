@@ -3,7 +3,7 @@ from main import System
 system = System()
 
 
-# ==================================
+#
 #        ADMIN MENU
 # ==================================
 
