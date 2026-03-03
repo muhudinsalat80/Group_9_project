@@ -2,7 +2,7 @@ from main import users, courses, registrations, Registration
 from datetime import datetime
 
 # ===============================
-# HELPER FUNCTION
+# HELPER FUNCTIONS
 # ===============================
 
 def find_user(username):
@@ -15,6 +15,10 @@ def show_courses():
     print("\nAvailable Courses:")
     for course in courses:
         print(course.course_id, "-", course.title, "-", course.instructor_name)
+
+# ===============================
+# STUDENT FUNCTIONS
+# ===============================
 
 def register_course(user):
     show_courses()
@@ -45,12 +49,97 @@ def register_course(user):
 
     print("Course not found.")
 
+
+def student_menu(user):
+    while True:
+        print("\n===== STUDENT MENU =====")
+        print("1. Register for Course")
+        print("2. View Courses")
+        print("3. Logout")
+
+        choice = input("Enter choice: ")
+
+        if choice == "1":
+            register_course(user)
+
+        elif choice == "2":
+            show_courses()
+
+        elif choice == "3":
+            print("Logging out...")
+            break
+
+        else:
+            print("Invalid option.")
+
+
+# ===============================
+# ADMIN FUNCTIONS
+# ===============================
+
+def admin_menu():
+    while True:
+        print("\n===== ADMIN MENU =====")
+        print("1. Add Course")
+        print("2. View Courses")
+        print("3. View Registrations")
+        print("4. Logout")
+
+        choice = input("Enter choice: ")
+
+        if choice == "1":
+            add_course()
+
+        elif choice == "2":
+            show_courses()
+
+        elif choice == "3":
+            show_registrations()
+
+        elif choice == "4":
+            print("Logging out...")
+            break
+
+        else:
+            print("Invalid option.")
+
+
+def add_course():
+    try:
+        course_id = int(input("Enter Course ID: "))
+    except ValueError:
+        print("Invalid Course ID.")
+        return
+
+    title = input("Enter Course Title: ")
+    instructor = input("Enter Instructor Name: ")
+
+    from main import Course  # Avoid circular import
+
+    new_course = Course(course_id, title, instructor)
+    courses.append(new_course)
+
+    print("Course added successfully!")
+
+
+def show_registrations():
+    if not registrations:
+        print("No registrations found.")
+        return
+
+    print("\nRegistrations:")
+    for reg in registrations:
+        print("Reg ID:",reg.reg_id ,
+              "| User ID:", reg.user_id,
+              "| Course ID:", reg.course_id,
+              "| Status:", reg.status)
+
+
 # ===============================
 # MAIN MENU
 # ===============================
 
 def main_menu():
-
     while True:
 
         print("\n===== COURSE MANAGEMENT SYSTEM =====")
@@ -72,9 +161,10 @@ def main_menu():
                 print("Login successful!")
 
                 if user.role == "student":
-                    register_course(user)
-                else:
-                    print("Admins cannot register for courses.")
+                    student_menu(user)
+
+                elif user.role == "admin":
+                    admin_menu()
 
             else:
                 print("Invalid credentials.")
