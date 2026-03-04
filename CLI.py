@@ -1,5 +1,6 @@
 from main import users, courses, registrations, save_json
 from datetime import datetime
+from tabulate import tabulate
 
 # ===============================
 # HELPER FUNCTIONS
@@ -17,9 +18,17 @@ def show_courses():
 
     print("\nAvailable Courses:")
 
-    for course in courses:
-        print(course["course_id"], "-", course["title"], "-", course["instructor_name"])
+    table = []
 
+    for course in courses:
+        table.append([
+            course["course_id"],
+            course["title"],
+            course["instructor_name"]
+        ])
+
+    print(tabulate(table, headers=["ID", "Title", "Instructor"], tablefmt="grid"))
+    
 # ===============================
 # STUDENT FUNCTIONS
 # ===============================
