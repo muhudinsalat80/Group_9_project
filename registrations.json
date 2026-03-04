@@ -5,5 +5,12 @@
         "course_id": 3,
         "status": "active",
         "registered_at": "2026-03-04 10:03:20.900067"
+    },
+    {
+        "reg_id": 2,
+        "user_id": 2,
+        "course_id": 3,
+        "status": "active",
+        "registered_at": "2026-03-04 19:39:30.084813"
     }
 ]
