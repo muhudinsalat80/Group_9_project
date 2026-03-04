@@ -1,0 +1,23 @@
+[
+    {
+        "user_id": 1,
+        "username": "mohamed",
+        "password": "12345",
+        "role": "admin",
+        "email": "mohamed@email.com"
+    },
+    {
+        "user_id": 2,
+        "username": "feisal",
+        "password": "1111",
+        "role": "student",
+        "email": "feisal@email.com"
+    },
+    {
+        "user_id": 3,
+        "username": "amin",
+        "password": "0000",
+        "role": "student",
+        "email": "amin@gmail.com"
+    }
+]
